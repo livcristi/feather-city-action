@@ -1,6 +1,6 @@
 name: "Feather City Java Analysis"
 description: "Analyzes Java projects and generates visualizations using Feather City"
-author: "Your Name"
+author: "Feather City Team"
 
 inputs:
   input_dir:
@@ -8,74 +8,112 @@ inputs:
     required: false
     default: "./src"
   metrics:
-    description: "Comma-separated list of metrics (e.g., loc,cc,cloc)"
+    description: "Comma-separated list of metrics (e.g., loc,cc,cloc,iss)"
     required: false
-    default: "loc,cc,cloc"
+    default: "loc,cc,iss,cloc,wmc,nom,ce,ca,stat"
   theme:
-    description: "Visualization theme"
+    description: "Visualization theme (light or dark)"
     required: false
     default: "light"
   output_dir:
     description: "Output directory for visualization results"
     required: false
-    default: ".visual"
+    default: "visual"
   commit_results:
     description: "Whether to commit the results back to the repository"
     required: false
-    default: "true"
+    default: "false"
+  java_version:
+    description: "Java version to use"
+    required: false
+    default: "8"
+  java_distribution:
+    description: "Java distribution to use"
+    required: false
+    default: "adopt"
+  python_version:
+    description: "Python version to use"
+    required: false
+    default: "3.12"
+  pmd_version:
+    description: "PMD version to use"
+    required: false
+    default: "7.13.0"
+  feather_city_version:
+    description: "Feather City version to use"
+    required: false
+    default: "0.1.1b4"
 
 runs:
   using: "composite"
   steps:
-    - name: Set up Java 8
+    - name: Set up Java
       uses: actions/setup-java@v3
       with:
-        java-version: "8"
-        distribution: "adopt"
+        java-version: ${{ inputs.java_version }}
+        distribution: ${{ inputs.java_distribution }}
 
-    - name: Set up Python 3.12
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: "3.12"
+        python-version: ${{ inputs.python_version }}
 
     - name: Install PMD
       shell: bash
       run: |
-        curl -L https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.55.0/pmd-bin-6.55.0.zip -o pmd.zip
-        unzip pmd.zip -d pmd
-        chmod +x ${{ github.workspace }}/pmd/pmd-bin-6.55.0/bin/run.sh
-        echo "PMD_HOME=${{ github.workspace }}/pmd/pmd-bin-6.55.0" >> $GITHUB_ENV
-        echo "${{ github.workspace }}/pmd/pmd-bin-6.55.0/bin" >> $GITHUB_PATH
+        # Download and extract PMD
+        wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F${{ inputs.pmd_version }}/pmd-dist-${{ inputs.pmd_version }}-bin.zip -O pmd.zip
+        unzip pmd.zip
+
+        # Make the PMD script executable
+        chmod +x ${{ github.workspace }}/pmd-bin-${{ inputs.pmd_version }}/bin/pmd
+
+        # Add PMD to PATH
+        echo "${{ github.workspace }}/pmd-bin-${{ inputs.pmd_version }}/bin" >> $GITHUB_PATH
+
+        # Verify installation
+        echo "PMD installation path: ${{ github.workspace }}/pmd-bin-${{ inputs.pmd_version }}/bin"
+        ls -la ${{ github.workspace }}/pmd-bin-${{ inputs.pmd_version }}/bin
 
     - name: Install Feather City
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        pip install "feather-city[java]==0.1.1b3" \
+        pip install "feather-city[java]==${{ inputs.feather_city_version }}" \
           --extra-index-url https://pypi.org/simple/ \
           -i https://test.pypi.org/simple/
+
+        # Verify installation
+        pip list | grep feather-city
+        which feather-city
 
     - name: Run Feather City CLI
       shell: bash
       run: |
         feather-city \
-          --input ${{ inputs.input_dir }} \
+          --input '${{ inputs.input_dir }}' \
           --language java \
-          --analyser-args --metrics ${{ inputs.metrics }} --pmd-path $PMD_HOME/bin/$([ "$RUNNER_OS" == "Windows" ] && echo "pmd.bat" || echo "run.sh") \
-          --visualiser-args --theme ${{ inputs.theme }} \
-          --output ${{ inputs.output_dir }} \
+          --analyser-args --metrics '${{ inputs.metrics }}' \
+          --visualiser-args --theme '${{ inputs.theme }}' --output-dir '${{ inputs.output_dir }}'
 
-    - name: Commit results to repo
-      if: ${{ inputs.commit_results == 'true' }}
+    - name: Upload visualization as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: feather-city-visualization
+        path: ${{ inputs.output_dir }}
+
+    - name: Summary
       shell: bash
       run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
-        git add ${{ inputs.output_dir }}
-        git diff --quiet && git diff --staged --quiet || git commit -m "Add visualization via Feather City"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+        # Create a summary with links to the artifacts
+        echo "## Feather City Analysis Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Analysis completed successfully. You can view the results by downloading the 'feather-city-visualization' artifact." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "To view the visualization:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Download the artifact" >> $GITHUB_STEP_SUMMARY
+        echo "2. Extract the zip file" >> $GITHUB_STEP_SUMMARY
+        echo "3. Open \`index.html\` in your browser" >> $GITHUB_STEP_SUMMARY
 
 branding:
   icon: "bar-chart-2"
