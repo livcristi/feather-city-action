@@ -51,7 +51,7 @@ runs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        pip install "feather-city[java]==0.1.1b2" \
+        pip install "feather-city[java]==0.1.1b3" \
           --extra-index-url https://pypi.org/simple/ \
           -i https://test.pypi.org/simple/
 
