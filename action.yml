@@ -1,0 +1,82 @@
+name: "Feather City Java Analysis"
+description: "Analyzes Java projects and generates visualizations using Feather City"
+author: "Your Name"
+
+inputs:
+  input_dir:
+    description: "Directory containing Java source files"
+    required: false
+    default: "./src"
+  metrics:
+    description: "Comma-separated list of metrics (e.g., loc,cc,cloc)"
+    required: false
+    default: "loc,cc,cloc"
+  theme:
+    description: "Visualization theme"
+    required: false
+    default: "light"
+  output_dir:
+    description: "Output directory for visualization results"
+    required: false
+    default: ".visual"
+  commit_results:
+    description: "Whether to commit the results back to the repository"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Java 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: "8"
+        distribution: "adopt"
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install PMD
+      shell: bash
+      run: |
+        curl -L https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.55.0/pmd-bin-6.55.0.zip -o pmd.zip
+        unzip pmd.zip -d pmd
+        chmod +x ${{ github.workspace }}/pmd/pmd-bin-6.55.0/bin/run.sh
+        echo "PMD_HOME=${{ github.workspace }}/pmd/pmd-bin-6.55.0" >> $GITHUB_ENV
+        echo "${{ github.workspace }}/pmd/pmd-bin-6.55.0/bin" >> $GITHUB_PATH
+
+    - name: Install Feather City
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install "feather-city[java]==0.1.1b1" \
+          --extra-index-url https://pypi.org/simple/ \
+          -i https://test.pypi.org/simple/
+
+    - name: Run Feather City CLI
+      shell: bash
+      run: |
+        feather-city \
+          --input ${{ inputs.input_dir }} \
+          --language java \
+          --analyser-args --metrics ${{ inputs.metrics }} --pmd-path $PMD_HOME/bin/$([ "$RUNNER_OS" == "Windows" ] && echo "pmd.bat" || echo "run.sh") \
+          --visualiser-args --theme ${{ inputs.theme }} \
+          --output ${{ inputs.output_dir }} \
+
+    - name: Commit results to repo
+      if: ${{ inputs.commit_results == 'true' }}
+      shell: bash
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add ${{ inputs.output_dir }}
+        git diff --quiet && git diff --staged --quiet || git commit -m "Add visualization via Feather City"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+branding:
+  icon: "bar-chart-2"
+  color: "blue"
