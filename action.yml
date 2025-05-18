@@ -11,18 +11,34 @@ inputs:
     description: "Comma-separated list of metrics (e.g., loc,cc,cloc,iss)"
     required: false
     default: "loc,cc,iss,cloc,wmc,nom,ce,ca,stat"
-  theme:
-    description: "Visualization theme (light or dark)"
-    required: false
-    default: "light"
   output_dir:
     description: "Output directory for visualization results"
     required: false
     default: "visual"
-  commit_results:
-    description: "Whether to commit the results back to the repository"
+  theme:
+    description: "Visualization theme (light or dark)"
     required: false
-    default: "false"
+    default: "light"
+  color_palette:
+    description: "Color palette (eg: puBu, magma, oranges)"
+    required: false
+    default: "puBu"
+  treemap_algorithm:
+    description: "The treemap algorithm to be used"
+    required: false
+    default: "squarify"
+  map_width:
+    description: "The city map width"
+    required: false
+    default: "1000"
+  map_depth:
+    description: "The city map depth"
+    required: false
+    default: "1060"
+  show_legend:
+    description: "Whether to show the legend or not"
+    required: false
+    default: "true"
   java_version:
     description: "Java version to use"
     required: false
@@ -42,7 +58,7 @@ inputs:
   feather_city_version:
     description: "Feather City version to use"
     required: false
-    default: "0.1.1b4"
+    default: "0.1.1b7"
 
 runs:
   using: "composite"
@@ -94,7 +110,7 @@ runs:
           --input '${{ inputs.input_dir }}' \
           --language java \
           --analyser-args --metrics '${{ inputs.metrics }}' \
-          --visualiser-args --theme '${{ inputs.theme }}' --output-dir '${{ inputs.output_dir }}'
+          --visualiser-args --theme '${{ inputs.theme }}' --output-dir '${{ inputs.output_dir }}' --map-width '${{ inputs.map_width }}' --map-depth '${{ inputs.map_depth }}' --treemap-algorithm '${{ inputs.treemap_algorithm }}' --color-palette '${{ inputs.color_palette }}' --show-legend '${{ inputs.show_legend }}'
 
     - name: Upload visualization as artifact
       uses: actions/upload-artifact@v4
