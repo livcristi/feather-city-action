@@ -110,7 +110,7 @@ runs:
           --input '${{ inputs.input_dir }}' \
           --language java \
           --analyser-args --metrics '${{ inputs.metrics }}' \
-          --visualiser-args --theme '${{ inputs.theme }}' --output-dir '${{ inputs.output_dir }}' --map-width '${{ inputs.map_width }}' --map-depth '${{ inputs.map_depth }}' --treemap-algorithm '${{ inputs.treemap_algorithm }}' --color-palette '${{ inputs.color_palette }}' --show-legend '${{ inputs.show_legend }}'
+          --visualiser-args --theme ${{ inputs.theme }} --output-dir '${{ inputs.output_dir }}' --map-width ${{ inputs.map_width }} --map-depth ${{ inputs.map_depth }} --treemap-algorithm ${{ inputs.treemap_algorithm }} --color-palette ${{ inputs.color_palette }} --show-legend ${{ inputs.show_legend }}
 
     - name: Upload visualization as artifact
       uses: actions/upload-artifact@v4
