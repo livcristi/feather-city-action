@@ -122,11 +122,11 @@ runs:
         DESCRIPTION_PARAM=""
 
         if [[ -n "${{ inputs.title }}" ]]; then
-          TITLE_PARAM="--title '${{ inputs.title }}'"
+          TITLE_PARAM='--title "${{ inputs.title }}"'
         fi
 
         if [[ -n "${{ inputs.project_description }}" ]]; then
-          DESCRIPTION_PARAM="--description '${{ inputs.project_description }}'"
+          DESCRIPTION_PARAM='--description "${{ inputs.project_description }}"'
         fi
 
         feather-city \
