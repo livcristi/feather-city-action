@@ -12,8 +12,17 @@ inputs:
     required: false
     default: "loc,cc,iss,cloc,wmc,nom,ce,ca,stat"
   pmd_rulesets:
-    descriptions: "Comma-separated list of pmd rulesets (e.g., category/java/bestpractices.xml,category/java/design.xml)"
+    description: "Comma-separated list of pmd rulesets (e.g., category/java/bestpractices.xml,category/java/design.xml)"
+    required: false
     default: "category/java/bestpractices.xml,category/java/design.xml,category/java/errorprone.xml"
+  title:
+    description: "Title for the visualisation"
+    required: false
+    default: ""
+  project_description:
+    description: "Description of the project for the visualisation"
+    required: false
+    default: ""
   output_dir:
     description: "Output directory for visualization results"
     required: false
@@ -109,10 +118,18 @@ runs:
     - name: Run Feather City CLI
       shell: bash
       run: |
+        ANALYSER_ARGS="--metrics '${{ inputs.metrics }}' --rulesets '${{ inputs.pmd_rulesets }}'"
+        if [[ -n "${{ inputs.title }}" ]]; then
+          ANALYSER_ARGS="${ANALYSER_ARGS} --title '${{ inputs.title }}'"
+        fi
+        if [[ -n "${{ inputs.project_description }}" ]]; then
+          ANALYSER_ARGS="${ANALYSER_ARGS} --description '${{ inputs.project_description }}'"
+        fi
+
         feather-city \
           --input '${{ inputs.input_dir }}' \
           --language java \
-          --analyser-args --metrics '${{ inputs.metrics }}' --rulesets '${{ inputs.pmd_rulesets }}' \
+          --analyser-args ${ANALYSER_ARGS} \
           --visualiser-args --theme ${{ inputs.theme }} --output-dir '${{ inputs.output_dir }}' --map-width ${{ inputs.map_width }} --map-depth ${{ inputs.map_depth }} --treemap-algorithm ${{ inputs.treemap_algorithm }} --color-palette ${{ inputs.color_palette }} --show-legend ${{ inputs.show_legend }}
 
     - name: Upload visualization as artifact
