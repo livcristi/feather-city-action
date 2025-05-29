@@ -11,6 +11,9 @@ inputs:
     description: "Comma-separated list of metrics (e.g., loc,cc,cloc,iss)"
     required: false
     default: "loc,cc,iss,cloc,wmc,nom,ce,ca,stat"
+  pmd_rulesets:
+    descriptions: "Comma-separated list of pmd rulesets (e.g., category/java/bestpractices.xml,category/java/design.xml)"
+    default: "category/java/bestpractices.xml,category/java/design.xml,category/java/errorprone.xml"
   output_dir:
     description: "Output directory for visualization results"
     required: false
@@ -109,7 +112,7 @@ runs:
         feather-city \
           --input '${{ inputs.input_dir }}' \
           --language java \
-          --analyser-args --metrics '${{ inputs.metrics }}' \
+          --analyser-args --metrics '${{ inputs.metrics }}' --rulesets '${{ inputs.pmd_rulesets }}' \
           --visualiser-args --theme ${{ inputs.theme }} --output-dir '${{ inputs.output_dir }}' --map-width ${{ inputs.map_width }} --map-depth ${{ inputs.map_depth }} --treemap-algorithm ${{ inputs.treemap_algorithm }} --color-palette ${{ inputs.color_palette }} --show-legend ${{ inputs.show_legend }}
 
     - name: Upload visualization as artifact
