@@ -67,19 +67,22 @@ jobs:
 
 ## Inputs
 
-| Input                  | Description                                       | Required | Default       |
-| ---------------------- | ------------------------------------------------- | -------- | ------------- |
-| `input_dir`            | Directory containing Java source files            | No       | `./src`       |
-| `metrics`              | Comma-separated list of metrics (e.g., loc,cc,mi) | No       | `loc,cc,cloc` |
-| `output_dir`           | Output directory for visualization results        | No       | `.visual`     |
-| `theme`                | Visualization theme (light or dark)               | No       | `light`       |
-| `color_palette`        | Color palette (eg: puBu, magma, oranges)          | No       | `puBu`        |
-| `treemap_algorithm`    | The treemap algorithm to be used                  | No       | `squarify`    |
-| `map_width`            | The city map width                                | No       | `1000`        |
-| `map_depth`            | The city map depth                                | No       | `1060`        |
-| `show_legend`          | Whether to show the legend or not                 | No       | `true`        |
-| `pmd_version`          | PMD version to use                                | No       | `7.13.0`      |
-| `feather_city_version` | Feather City version to use                       | No       | latest one    |
+| Input                  | Description                                       | Required | Default         |
+| ---------------------- | ------------------------------------------------- | -------- | --------------- |
+| `input_dir`            | Directory containing Java source files            | No       | `./src`         |
+| `metrics`              | Comma-separated list of metrics (e.g., loc,cc,mi) | No       | all of them     |
+| `pmd_rulesets`         | Comma-separated list of pmd rulesets              | No       | see action code |
+| `title`                | The title for the visualisation                   | No       | empty           |
+| `description`          | Description of the project for the visualisation  | No       | empty           |
+| `output_dir`           | Output directory for visualization results        | No       | `.visual`       |
+| `theme`                | Visualization theme (light or dark)               | No       | `light`         |
+| `color_palette`        | Color palette (eg: puBu, magma, oranges)          | No       | `puBu`          |
+| `treemap_algorithm`    | The treemap algorithm to be used                  | No       | `squarify`      |
+| `map_width`            | The city map width                                | No       | `1000`          |
+| `map_depth`            | The city map depth                                | No       | `1060`          |
+| `show_legend`          | Whether to show the legend or not                 | No       | `true`          |
+| `pmd_version`          | PMD version to use                                | No       | `7.13.0`        |
+| `feather_city_version` | Feather City version to use                       | No       | latest one      |
 
 ## Important Notes
 
