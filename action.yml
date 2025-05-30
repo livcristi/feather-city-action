@@ -118,29 +118,47 @@ runs:
     - name: Run Feather City CLI
       shell: bash
       run: |
-        TITLE_PARAM=""
-        DESCRIPTION_PARAM=""
+        # Start building the command with fixed arguments
+        COMMAND_ARGS=(
+          feather-city
+          --input '${{ inputs.input_dir }}'
+          --language java
+        )
 
+        # Conditionally add --title if input is not empty
+        # The value is double-quoted here to ensure it's passed as a single argument
         if [[ -n "${{ inputs.title }}" ]]; then
-          TITLE_PARAM='--title "${{ inputs.title }}"'
+          COMMAND_ARGS+=(--title "${{ inputs.title }}")
         fi
 
+        # Conditionally add --description if input is not empty
+        # The value is double-quoted here to ensure it's passed as a single argument
         if [[ -n "${{ inputs.project_description }}" ]]; then
-          DESCRIPTION_PARAM='--description "${{ inputs.project_description }}"'
+          COMMAND_ARGS+=(--description "${{ inputs.project_description }}")
         fi
 
-        feather-city \
-          --input '${{ inputs.input_dir }}' \
-          --language java \
-          ${TITLE_PARAM} \
-          ${DESCRIPTION_PARAM} \
-          --analyser-args --metrics '${{ inputs.metrics }}' --rulesets '${{ inputs.pmd_rulesets }}' \
-          --visualiser-args --theme ${{ inputs.theme }} --output-dir '${{ inputs.output_dir }}' --map-width ${{ inputs.map_width }} --map-depth ${{ inputs.map_depth }} --treemap-algorithm ${{ inputs.treemap_algorithm }} --color-palette ${{ inputs.color_palette }} --show-legend ${{ inputs.show_legend }}
-        - name: Upload visualization as artifact
-          uses: actions/upload-artifact@v4
-          with:
-            name: feather-city-visualization
-            path: ${{ inputs.output_dir }}
+        # Add analyser arguments
+        COMMAND_ARGS+=(
+          --analyser-args
+          --metrics '${{ inputs.metrics }}'
+          --rulesets '${{ inputs.pmd_rulesets }}'
+        )
+
+        # Add visualiser arguments
+        COMMAND_ARGS+=(
+          --visualiser-args
+          --theme ${{ inputs.theme }}
+          --output-dir '${{ inputs.output_dir }}'
+          --map-width ${{ inputs.map_width }}
+          --map-depth ${{ inputs.map_depth }}
+          --treemap-algorithm ${{ inputs.treemap_algorithm }}
+          --color-palette ${{ inputs.color_palette }}
+          --show-legend ${{ inputs.show_legend }}
+        )
+
+        # Execute the command. "${COMMAND_ARGS[@]}" expands each array element
+        # as a separate, correctly quoted argument, handling spaces automatically.
+        "${COMMAND_ARGS[@]}"
 
     - name: Summary
       shell: bash
