@@ -90,9 +90,9 @@ jobs:
 
 ## Example for Visualisations
 
-Java project visualisation: ![Screenshot of the 3D city visualisation for a Java project, with the legend opened on the left, city in the center with blocks representing classes and an active hover tooltip over a class, displaying its metrics](assets\java.png)
+Java project visualisation: ![Screenshot of the 3D city visualisation for a Java project, with the legend opened on the left, city in the center with blocks representing classes and an active hover tooltip over a class, displaying its metrics](assets/java.png)
 
-TypeScript project (jQuery) visualisation: ![Screenshot of the 3D city visualisation for the jQuery project, with the legend opened on the left, city in the center with blocks representing classes and an active hover tooltip over a class, displaying its metrics](assets\jquery.png)
+TypeScript project (jQuery) visualisation: ![Screenshot of the 3D city visualisation for the jQuery project, with the legend opened on the left, city in the center with blocks representing classes and an active hover tooltip over a class, displaying its metrics](assets/jquery.png)
 
 ## Inputs
 
