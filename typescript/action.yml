@@ -112,27 +112,6 @@ runs:
     - name: Run Feather City CLI
       shell: bash
       run: |
-        feather-city \
-          --input '${{ inputs.input_dir }}' \
-          --language ts \
-          --title "${{ inputs.title }}" \
-          --description "${{ inputs.project_description }}" \
-          --analyser-args \
-            --metrics '${{ inputs.ts_metrics }}' \
-            --exclude-directories '${{ inputs.exclude_directories }}' \
-            --exclude-filenames '${{ inputs.exclude_filenames }}' \
-          --visualiser-args \
-            --theme '${{ inputs.theme }}' \
-            --output-dir '${{ inputs.output_dir }}' \
-            --map-width '${{ inputs.map_width }}' \
-            --map-depth '${{ inputs.map_depth }}' \
-            --treemap-algorithm '${{ inputs.treemap_algorithm }}' \
-            --color-palette '${{ inputs.color_palette }}' \
-            --show-legend '${{ inputs.show_legend }}'
-
-    - name: Run Feather City CLI
-      shell: bash
-      run: |
         COMMAND_ARGS=(
           feather-city
           --input '${{ inputs.input_dir }}'
@@ -150,8 +129,9 @@ runs:
         COMMAND_ARGS+=(
           --analyser-args
           --metrics '${{ inputs.metrics }}'
-          --score-cap '${{ inputs.score_cap }}' 
         )
+
+        # --score-cap '${{ inputs.score_cap }}' 
 
         if [[ -n "${{ inputs.exclude_directories }}" ]]; then
           COMMAND_ARGS+=(--exclude-directories "${{ inputs.exclude_directories }}")
