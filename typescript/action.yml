@@ -1,0 +1,199 @@
+name: "Feather City TypeScript Analysis"
+description: "Analyzes TypeScript projects and generates a 3D treemap visualization with Feather City."
+author: "Feather City Team"
+
+inputs:
+  input_dir:
+    description: "Directory containing the TypeScript source files"
+    required: false
+    default: "./src"
+  title:
+    description: "Title for the visualisation"
+    required: false
+    default: ""
+  project_description:
+    description: "Description of the project for the visualisation"
+    required: false
+    default: ""
+  output_dir:
+    description: "Output directory for visualization results"
+    required: false
+    default: "visual"
+  theme:
+    description: "Visualization theme (light or dark)"
+    required: false
+    default: "light"
+  color_palette:
+    description: "Color palette (eg: puBu, magma, oranges)"
+    required: false
+    default: "puBu"
+  treemap_algorithm:
+    description: "The treemap algorithm to be used"
+    required: false
+    default: "squarify"
+  map_width:
+    description: "The city map width"
+    required: false
+    default: "1000"
+  map_depth:
+    description: "The city map depth"
+    required: false
+    default: "1060"
+  max_height:
+    description: "The maximum height for the city blocks"
+    required: false
+    default: "200"
+  show_legend:
+    description: "Whether to show the legend or not"
+    required: false
+    default: "true"
+  ts_metrics:
+    description: "Comma-separated list of metrics to compute (e.g., line_count,cyclo,fta_score)"
+    required: false
+    default: "line_count,cyclo,fta_score,uniq_operators,uniq_operands,total_operators,total_operands,program_length,vocabulary_size,volume,difficulty,effort,time,bugs,assessment"
+  score_cap:
+    description: "Score cap for the fta analysis"
+    required: false
+    default: "10000"
+  exclude_directories:
+    description: "Comma-separated list of directory names to exclude (e.g., /dist,/bin)"
+    required: false
+    default: ""
+  exclude_filenames:
+    description: "Comma-separated list of file name patterns to exclude (e.g., .d.ts,.min.js)"
+    required: false
+    default: ""
+  python_version:
+    description: "Python version used to run Feather City"
+    required: false
+    default: "3.12"
+  feather_city_version:
+    description: "Feather City version to use"
+    required: false
+    default: "0.1.2"
+  node_version:
+    description: "Node.js version to use for fta-cli"
+    required: false
+    default: "18"
+  fta_cli_version:
+    description: "fta-cli version to install"
+    required: false
+    default: "2.0.1"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python_version }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node_version }}
+
+    - name: Install fta-cli
+      shell: bash
+      run: npm install -g fta-cli@${{ inputs.fta_cli_version }}
+
+    - name: Install Feather City
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        pip install "feather-city==${{ inputs.feather_city_version }}" \
+          --extra-index-url https://pypi.org/simple/ \
+          -i https://test.pypi.org/simple/
+
+        # Verify installation
+        pip list | grep feather-city
+        which feather-city
+
+    - name: Run Feather City CLI
+      shell: bash
+      run: |
+        feather-city \
+          --input '${{ inputs.input_dir }}' \
+          --language typescript \
+          --title "${{ inputs.title }}" \
+          --description "${{ inputs.project_description }}" \
+          --analyser-args \
+            --metrics '${{ inputs.ts_metrics }}' \
+            --exclude-directories '${{ inputs.exclude_directories }}' \
+            --exclude-filenames '${{ inputs.exclude_filenames }}' \
+          --visualiser-args \
+            --theme '${{ inputs.theme }}' \
+            --output-dir '${{ inputs.output_dir }}' \
+            --map-width '${{ inputs.map_width }}' \
+            --map-depth '${{ inputs.map_depth }}' \
+            --treemap-algorithm '${{ inputs.treemap_algorithm }}' \
+            --color-palette '${{ inputs.color_palette }}' \
+            --show-legend '${{ inputs.show_legend }}'
+
+    - name: Run Feather City CLI
+      shell: bash
+      run: |
+        COMMAND_ARGS=(
+          feather-city
+          --input '${{ inputs.input_dir }}'
+          --language ts
+        )
+
+        if [[ -n "${{ inputs.title }}" ]]; then
+          COMMAND_ARGS+=(--title "${{ inputs.title }}")
+        fi
+
+        if [[ -n "${{ inputs.project_description }}" ]]; then
+          COMMAND_ARGS+=(--description "${{ inputs.project_description }}")
+        fi
+
+        COMMAND_ARGS+=(
+          --analyser-args
+          --metrics '${{ inputs.metrics }}'
+          --score-cap '${{ inputs.score_cap }}' 
+        )
+
+        if [[ -n "${{ inputs.exclude_directories }}" ]]; then
+          COMMAND_ARGS+=(--exclude-directories "${{ inputs.exclude_directories }}")
+        fi
+
+        if [[ -n "${{ inputs.exclude_filenames }}" ]]; then
+          COMMAND_ARGS+=(--exclude-filenames "${{ inputs.exclude_filenames }}")
+        fi
+
+        COMMAND_ARGS+=(
+          --visualiser-args
+          --theme ${{ inputs.theme }}
+          --output-dir '${{ inputs.output_dir }}'
+          --map-width ${{ inputs.map_width }}
+          --map-depth ${{ inputs.map_depth }}
+          --max-height ${{ inputs.max_height }}
+          --treemap-algorithm ${{ inputs.treemap_algorithm }}
+          --color-palette ${{ inputs.color_palette }}
+          --show-legend ${{ inputs.show_legend }}
+        )
+
+        "${COMMAND_ARGS[@]}"
+
+    - name: Upload visualization as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: feather-city-visualization
+        path: ${{ inputs.output_dir }}
+
+    - name: Summary
+      shell: bash
+      run: |
+        # Create a summary with links to the artifacts
+        echo "## Feather City Analysis Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Analysis completed successfully. You can view the results by downloading the 'feather-city-visualization' artifact." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "To view the visualization:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Download the artifact" >> $GITHUB_STEP_SUMMARY
+        echo "2. Extract the zip file" >> $GITHUB_STEP_SUMMARY
+        echo "3. Open \`index.html\` in your browser" >> $GITHUB_STEP_SUMMARY
+
+branding:
+  icon: "bar-chart-2"
+  color: "blue"

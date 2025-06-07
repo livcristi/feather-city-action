@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Feather City Analysis
-        uses: livcristi/feather-city-action@v1
+        uses: livcristi/feather-city-action@v0
 ```
 
 ### Advanced Usage
