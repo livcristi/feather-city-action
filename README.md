@@ -164,23 +164,23 @@ The following metrics are available for Java projects:
 
 And the following metrics are available for TypeScript / JavaScript projects:
 
-| ID | Name | Description |
-|---|---|---|
-| `line_count` | Lines of Code | Number of lines of code |
-| `cyclo` | Weighted Methods per Class | Sum of the complexities of the methods for a class |
-| `fta_score` | FTA Score | Raw FTA analysis score |
-| `uniq_operators` | Unique Operators | The total count of unique operators |
-| `uniq_operands` | Unique Operands | The total count of unique operands |
-| `total_operators` | Total Operators | The total count of operators |
-| `total_operands` | Total Operands | The total count of operands |
-| `program_length` | Program Length | The total count of operators and operands |
-| `vocabulary_size` | Program Vocabulary | The total count of unique operators and operands |
-| `volume` | Volume | A measure of the size of the program |
-| `difficulty` | Difficulty | Quantifies how difficult a program is to write or understand |
-| `effort` | Effort | An estimation of the amount of work required to write a program |
-| `time` | Time Required to Program | An estimation of the time required to write the program |
-| `bugs` | Bugs Predicted | An estimation of the number of bugs in the program |
-| `assessment` | FTA Analysis Assessment | A hint based on the FTA score |
+| ID                | Name                       | Description                                                     |
+| ----------------- | -------------------------- | --------------------------------------------------------------- |
+| `line_count`      | Lines of Code              | Number of lines of code                                         |
+| `cyclo`           | Weighted Methods per Class | Sum of the complexities of the methods for a class              |
+| `fta_score`       | FTA Score                  | Raw FTA analysis score                                          |
+| `uniq_operators`  | Unique Operators           | The total count of unique operators                             |
+| `uniq_operands`   | Unique Operands            | The total count of unique operands                              |
+| `total_operators` | Total Operators            | The total count of operators                                    |
+| `total_operands`  | Total Operands             | The total count of operands                                     |
+| `program_length`  | Program Length             | The total count of operators and operands                       |
+| `vocabulary_size` | Program Vocabulary         | The total count of unique operators and operands                |
+| `volume`          | Volume                     | A measure of the size of the program                            |
+| `difficulty`      | Difficulty                 | Quantifies how difficult a program is to write or understand    |
+| `effort`          | Effort                     | An estimation of the amount of work required to write a program |
+| `time`            | Time Required to Program   | An estimation of the time required to write the program         |
+| `bugs`            | Bugs Predicted             | An estimation of the number of bugs in the program              |
+| `assessment`      | FTA Analysis Assessment    | A hint based on the FTA score                                   |
 
 ### Color Palette
 
@@ -194,4 +194,6 @@ The color palettes are taken from [d3 sequential schemes](https://d3js.org/d3-sc
 For accessibility reasons, we suggest you to use color palettes that are also distinguishable for people with visual impairments.
 ## License
 
-[MIT License](LICENSE)
+This project has an [MIT License](LICENSE) for it and is currently only a research helper for my Master's thesis. 
+
+There is a special license associated with PMD (see [THIRD-PARTY-LICENSES](THIRD-PARTY-LICENSES)) which we also included in the project, since it uses PMD for the Java analysis, so be mindful of it.
