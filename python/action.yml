@@ -47,6 +47,10 @@ inputs:
     description: "Whether to show the legend or not"
     required: false
     default: "true"
+  show_dependency_lines:
+    description: "Whether to show the dependency lines or not"
+    required: false
+    default: "false"
   py_metrics:
     description: "Comma-separated list of metrics to compute (e.g., loc,cloc,nom)"
     required: false
@@ -66,7 +70,7 @@ inputs:
   feather_city_version:
     description: "Feather City version to use"
     required: false
-    default: "0.1.2"
+    default: "0.1.3"
   fta_cli_version:
     description: "fta-cli version to install"
     required: false
@@ -145,6 +149,7 @@ runs:
           --treemap-algorithm ${{ inputs.treemap_algorithm }}
           --color-palette ${{ inputs.color_palette }}
           --show-legend ${{ inputs.show_legend }}
+          --show-dependency-lines ${{ inputs.show_dependency_lines }}
         )
 
         "${COMMAND_ARGS[@]}"

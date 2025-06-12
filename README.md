@@ -124,68 +124,71 @@ Python project (Flask) visualisation: ![Screenshot of the 3D city visualisation 
 
 ### Java inputs
 
-| Input                  | Description                                           | Required | Default         |
-| ---------------------- | ----------------------------------------------------- | -------- | --------------- |
-| `input_dir`            | Directory containing Java source files                | No       | `./src`         |
-| `title`                | The title for the visualisation                       | No       | empty           |
-| `description`          | Description of the project for the visualisation      | No       | empty           |
-| `metrics`              | Comma-separated list of metrics (e.g., loc,cc,mi)     | No       | all of them     |
-| `pmd_rulesets`         | Comma-separated list of pmd rulesets                  | No       | see action code |
-| `exclude_directories`  | Comma-separated list of directory names to exclude    | No       | empty           |
-| `exclude_filenames`    | Comma-separated list of file name patterns to exclude | No       | empty           |
-| `output_dir`           | Output directory for visualization results            | No       | `.visual`       |
-| `theme`                | Visualization theme (light or dark)                   | No       | `light`         |
-| `color_palette`        | Color palette (eg: puBu, magma, oranges)              | No       | `puBu`          |
-| `treemap_algorithm`    | The treemap algorithm to be used                      | No       | `squarify`      |
-| `map_width`            | The city map width                                    | No       | `1000`          |
-| `map_depth`            | The city map depth                                    | No       | `1060`          |
-| `max_height`           | The maximum height for the city blocks                | No       | `200`           |
-| `show_legend`          | Whether to show the legend or not                     | No       | `true`          |
-| `pmd_version`          | PMD version to use                                    | No       | `7.13.0`        |
-| `feather_city_version` | Feather City version to use                           | No       | latest one      |
+| Input                   | Description                                           | Required | Default         |
+| ----------------------- | ----------------------------------------------------- | -------- | --------------- |
+| `input_dir`             | Directory containing Java source files                | No       | `./src`         |
+| `title`                 | The title for the visualisation                       | No       | empty           |
+| `description`           | Description of the project for the visualisation      | No       | empty           |
+| `metrics`               | Comma-separated list of metrics (e.g., loc,cc,mi)     | No       | all of them     |
+| `pmd_rulesets`          | Comma-separated list of pmd rulesets                  | No       | see action code |
+| `exclude_directories`   | Comma-separated list of directory names to exclude    | No       | empty           |
+| `exclude_filenames`     | Comma-separated list of file name patterns to exclude | No       | empty           |
+| `output_dir`            | Output directory for visualization results            | No       | `.visual`       |
+| `theme`                 | Visualization theme (light or dark)                   | No       | `light`         |
+| `color_palette`         | Color palette (eg: puBu, magma, oranges)              | No       | `puBu`          |
+| `treemap_algorithm`     | The treemap algorithm to be used                      | No       | `squarify`      |
+| `map_width`             | The city map width                                    | No       | `1000`          |
+| `map_depth`             | The city map depth                                    | No       | `1060`          |
+| `max_height`            | The maximum height for the city blocks                | No       | `200`           |
+| `show_legend`           | Whether to show the legend or not                     | No       | `true`          |
+| `show_dependency_lines` | Whether to show the dependency lines or not           | No       | `false`         |
+| `pmd_version`           | PMD version to use                                    | No       | `7.13.0`        |
+| `feather_city_version`  | Feather City version to use                           | No       | latest one      |
 
 ### TypeScript / JavaScript inputs
 
-| Input                  | Description                                                        | Required | Default     |
-| ---------------------- | ------------------------------------------------------------------ | -------- | ----------- |
-| `input_dir`            | Directory containing Java source files                             | No       | `./src`     |
-| `title`                | The title for the visualisation                                    | No       | empty       |
-| `description`          | Description of the project for the visualisation                   | No       | empty       |
-| `metrics`              | Comma-separated list of metrics (e.g., line_count,cyclo,fta_score) | No       | all of them |
-| `score_cap`            | Score cap for the fta analysis                                     | No       | 10000       |
-| `node_version`         | Node.js version to use for fta-cli                                 | No       | `18`        |
-| `fta_cli_version`      | fta-cli version to install and run                                 | No       | `2.0.1`     |
-| `exclude_directories`  | Comma-separated list of directory names to exclude                 | No       | empty       |
-| `exclude_filenames`    | Comma-separated list of file name patterns to exclude              | No       | empty       |
-| `output_dir`           | Output directory for visualization results                         | No       | `.visual`   |
-| `theme`                | Visualization theme (light or dark)                                | No       | `light`     |
-| `color_palette`        | Color palette (eg: puBu, magma, oranges)                           | No       | `puBu`      |
-| `treemap_algorithm`    | The treemap algorithm to be used                                   | No       | `squarify`  |
-| `map_width`            | The city map width                                                 | No       | `1000`      |
-| `map_depth`            | The city map depth                                                 | No       | `1060`      |
-| `max_height`           | The maximum height for the city blocks                             | No       | `200`       |
-| `show_legend`          | Whether to show the legend or not                                  | No       | `true`      |
-| `feather_city_version` | Feather City version to use                                        | No       | latest one  |
+| Input                   | Description                                                        | Required | Default     |
+| ----------------------- | ------------------------------------------------------------------ | -------- | ----------- |
+| `input_dir`             | Directory containing Java source files                             | No       | `./src`     |
+| `title`                 | The title for the visualisation                                    | No       | empty       |
+| `description`           | Description of the project for the visualisation                   | No       | empty       |
+| `metrics`               | Comma-separated list of metrics (e.g., line_count,cyclo,fta_score) | No       | all of them |
+| `score_cap`             | Score cap for the fta analysis                                     | No       | 10000       |
+| `node_version`          | Node.js version to use for fta-cli                                 | No       | `18`        |
+| `fta_cli_version`       | fta-cli version to install and run                                 | No       | `2.0.1`     |
+| `exclude_directories`   | Comma-separated list of directory names to exclude                 | No       | empty       |
+| `exclude_filenames`     | Comma-separated list of file name patterns to exclude              | No       | empty       |
+| `output_dir`            | Output directory for visualization results                         | No       | `.visual`   |
+| `theme`                 | Visualization theme (light or dark)                                | No       | `light`     |
+| `color_palette`         | Color palette (eg: puBu, magma, oranges)                           | No       | `puBu`      |
+| `treemap_algorithm`     | The treemap algorithm to be used                                   | No       | `squarify`  |
+| `map_width`             | The city map width                                                 | No       | `1000`      |
+| `map_depth`             | The city map depth                                                 | No       | `1060`      |
+| `max_height`            | The maximum height for the city blocks                             | No       | `200`       |
+| `show_legend`           | Whether to show the legend or not                                  | No       | `true`      |
+| `show_dependency_lines` | Whether to show the dependency lines or not                        | No       | `false`     |
+| `feather_city_version`  | Feather City version to use                                        | No       | latest one  |
 
 ### Python inputs
 
-| Input                  | Description                                           | Required | Default     |
-| ---------------------- | ----------------------------------------------------- | -------- | ----------- |
-| `input_dir`            | Directory containing Java source files                | No       | `./src`     |
-| `title`                | The title for the visualisation                       | No       | empty       |
-| `description`          | Description of the project for the visualisation      | No       | empty       |
-| `metrics`              | Comma-separated list of metrics (e.g., loc,cloc,nom)  | No       | all of them |
-| `exclude_directories`  | Comma-separated list of directory names to exclude    | No       | empty       |
-| `exclude_filenames`    | Comma-separated list of file name patterns to exclude | No       | empty       |
-| `output_dir`           | Output directory for visualization results            | No       | `.visual`   |
-| `theme`                | Visualization theme (light or dark)                   | No       | `light`     |
-| `color_palette`        | Color palette (eg: puBu, magma, oranges)              | No       | `puBu`      |
-| `treemap_algorithm`    | The treemap algorithm to be used                      | No       | `squarify`  |
-| `map_width`            | The city map width                                    | No       | `1000`      |
-| `map_depth`            | The city map depth                                    | No       | `1060`      |
-| `max_height`           | The maximum height for the city blocks                | No       | `200`       |
-| `show_legend`          | Whether to show the legend or not                     | No       | `true`      |
-| `feather_city_version` | Feather City version to use                           | No       | latest one  |
+| Input                   | Description                                           | Required | Default     |
+| ----------------------- | ----------------------------------------------------- | -------- | ----------- |
+| `input_dir`             | Directory containing Java source files                | No       | `./src`     |
+| `title`                 | The title for the visualisation                       | No       | empty       |
+| `description`           | Description of the project for the visualisation      | No       | empty       |
+| `metrics`               | Comma-separated list of metrics (e.g., loc,cloc,nom)  | No       | all of them |
+| `exclude_directories`   | Comma-separated list of directory names to exclude    | No       | empty       |
+| `exclude_filenames`     | Comma-separated list of file name patterns to exclude | No       | empty       |
+| `output_dir`            | Output directory for visualization results            | No       | `.visual`   |
+| `theme`                 | Visualization theme (light or dark)                   | No       | `light`     |
+| `color_palette`         | Color palette (eg: puBu, magma, oranges)              | No       | `puBu`      |
+| `treemap_algorithm`     | The treemap algorithm to be used                      | No       | `squarify`  |
+| `map_width`             | The city map width                                    | No       | `1000`      |
+| `map_depth`             | The city map depth                                    | No       | `1060`      |
+| `max_height`            | The maximum height for the city blocks                | No       | `200`       |
+| `show_legend`           | Whether to show the legend or not                     | No       | `true`      |
+| `show_dependency_lines` | Whether to show the dependency lines or not           | No       | `false`     |
+| `feather_city_version`  | Feather City version to use                           | No       | latest one  |
 
 ## Important Notes
 
