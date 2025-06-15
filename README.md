@@ -208,6 +208,7 @@ The following metrics are available for Java projects:
 | `cloc` | Comment Lines              | Number of lines containing comments                                                    |
 | `cc`   | Cyclomatic Complexity      | Measure of code complexity based on control flow and computes an average for the class |
 | `nom`  | Number of Methods          | Number of methods or functions                                                         |
+| `noa`  | Number of Attributes       | Number of attributes in the class                                                      |
 | `stat` | Statements Count           | Number of statements in the class                                                      |
 | `ce`   | Efferent Coupling          | Number of components that the class depends on                                         |
 | `ca`   | Afferent Coupling          | Number of components that depend on the class                                          |

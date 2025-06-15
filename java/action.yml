@@ -18,7 +18,7 @@ inputs:
   metrics:
     description: "Comma-separated list of metrics (e.g., loc,wmc,cloc,iss)"
     required: false
-    default: "loc,wmc,iss,cloc,cc,nom,ce,ca,stat"
+    default: "loc,wmc,iss,cloc,cc,nom,noa,ce,ca,stat"
   pmd_rulesets:
     description: "Comma-separated list of pmd rulesets (e.g., category/java/bestpractices.xml,category/java/design.xml)"
     required: false
